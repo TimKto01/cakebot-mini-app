@@ -34,11 +34,13 @@
   <p class="lead">Фотографии уже добавлены в чате. Заполни несколько полей — бот покажет готовый пост перед публикацией.</p>
   <form id="form" class="card">
     <label for="name">Название тортика *</label>
-    <input id="name" name="name" required maxlength="120" placeholder="Например, Медовик" autocomplete="off">
+    <input id="name" name="name" list="cake-suggestions" required maxlength="120" placeholder="Например, Медовик" autocomplete="off">
+    <datalist id="cake-suggestions"></datalist>
     <div class="grid">
       <div><label for="weight">Вес *</label><input id="weight" name="weight" required placeholder="1,5 кг" maxlength="30" inputmode="decimal"></div>
-      <div><label for="filling">Начинка *</label><input id="filling" name="filling" required placeholder="Шоколадная" maxlength="120"></div>
+      <div><label for="filling">Начинка *</label><input id="filling" name="filling" list="filling-suggestions" required placeholder="Шоколадная" maxlength="120"></div>
     </div>
+    <datalist id="filling-suggestions"></datalist>
     <details>
       <summary>Дополнительные детали</summary>
       <label for="description">Описание</label>
@@ -59,11 +61,25 @@
   const app = window.Telegram?.WebApp;
   app?.ready();
   app?.expand();
+  const params = new URLSearchParams(location.search);
+  for (const [key, target] of [['names', 'cake-suggestions'], ['fillings', 'filling-suggestions']]) {
+    try {
+      const values = JSON.parse(params.get(key) || '[]');
+      if (Array.isArray(values)) {
+        for (const value of values.slice(0, 8)) {
+          if (typeof value !== 'string') continue;
+          const option = document.createElement('option');
+          option.value = value;
+          document.getElementById(target).appendChild(option);
+        }
+      }
+    } catch (_) { /* Пользователь всё равно может ввести значение вручную. */ }
+  }
   const form = document.getElementById('form');
   const error = document.getElementById('error');
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    const postId = Number(new URLSearchParams(location.search).get('post_id'));
+    const postId = Number(params.get('post_id'));
     if (!app || !Number.isSafeInteger(postId) || postId < 1) {
       error.textContent = 'Открой форму кнопкой из чата с ботом.';
       return;
