@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Тортик — новая публикация</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root { color-scheme: light dark; font-family: system-ui, -apple-system, Segoe UI, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--tg-theme-bg-color, #fff9f4); color: var(--tg-theme-text-color, #302423); }
+    main { max-width: 680px; margin: auto; padding: 20px 18px 36px; }
+    h1 { font-size: 27px; margin: 3px 0 6px; }
+    .lead { color: var(--tg-theme-hint-color, #6f625f); line-height: 1.45; margin: 0 0 22px; }
+    .card { background: var(--tg-theme-secondary-bg-color, #fff); border-radius: 22px; padding: 18px; box-shadow: 0 6px 26px #28150f12; }
+    label { display: block; font-weight: 650; margin: 16px 0 6px; }
+    label:first-child { margin-top: 0; }
+    input, textarea { width: 100%; border: 1px solid #d9c7bf; border-radius: 13px; padding: 13px 14px; font: inherit; background: var(--tg-theme-bg-color, #fff); color: var(--tg-theme-text-color, #302423); outline: none; }
+    input:focus, textarea:focus { border-color: var(--tg-theme-button-color, #bc6e5c); box-shadow: 0 0 0 3px #bc6e5c25; }
+    textarea { min-height: 100px; resize: vertical; }
+    .hint { color: var(--tg-theme-hint-color, #817672); font-size: 13px; margin-top: 5px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+    @media (max-width: 460px) { .grid { grid-template-columns: 1fr; } }
+    details { margin-top: 20px; }
+    summary { cursor: pointer; font-weight: 700; padding: 10px 0; }
+    button { width: 100%; border: 0; border-radius: 15px; padding: 16px; margin-top: 20px; font: inherit; font-weight: 750; background: var(--tg-theme-button-color, #a95f50); color: var(--tg-theme-button-text-color, white); cursor: pointer; }
+    button:active { transform: scale(.99); }
+    #error { color: #bb3434; min-height: 20px; margin-top: 12px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>🎂 Новая публикация</h1>
+  <p class="lead">Фотографии уже добавлены в чате. Заполни несколько полей — бот покажет готовый пост перед публикацией.</p>
+  <form id="form" class="card">
+    <label for="name">Название тортика *</label>
+    <input id="name" name="name" required maxlength="120" placeholder="Например, Медовик" autocomplete="off">
+    <div class="grid">
+      <div><label for="weight">Вес *</label><input id="weight" name="weight" required placeholder="1,5 кг" maxlength="30" inputmode="decimal"></div>
+      <div><label for="filling">Начинка *</label><input id="filling" name="filling" required placeholder="Шоколадная" maxlength="120"></div>
+    </div>
+    <label for="description">Описание</label>
+    <textarea id="description" name="description" maxlength="500" placeholder="Что хочется рассказать об этом тортике?"></textarea>
+    <div class="hint">Если оставить пустым, бот подготовит развёрнутое описание сам.</div>
+    <details>
+      <summary>Дополнительные детали</summary>
+      <label for="occasion">Повод</label><input id="occasion" name="occasion" maxlength="120" placeholder="День рождения">
+      <label for="decoration">Оформление</label><input id="decoration" name="decoration" maxlength="200" placeholder="Розовые цветы">
+      <div class="grid">
+        <div><label for="price">Цена</label><input id="price" name="price" maxlength="50" placeholder="По желанию"></div>
+        <div><label for="extra">Дополнительно</label><input id="extra" name="extra" maxlength="200" placeholder="По желанию"></div>
+      </div>
+    </details>
+    <button type="submit">Показать готовый пост</button>
+    <div id="error" role="alert"></div>
+  </form>
+</main>
+<script>
+  const app = window.Telegram?.WebApp;
+  app?.ready();
+  app?.expand();
+  const form = document.getElementById('form');
+  const error = document.getElementById('error');
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const postId = Number(new URLSearchParams(location.search).get('post_id'));
+    if (!app || !Number.isSafeInteger(postId) || postId < 1) {
+      error.textContent = 'Открой форму кнопкой из чата с ботом.';
+      return;
+    }
+    const data = Object.fromEntries(new FormData(form).entries());
+    data.post_id = postId;
+    if (!data.name.trim() || !data.weight.trim() || !data.filling.trim()) {
+      error.textContent = 'Заполни название, вес и начинку.';
+      return;
+    }
+    const payload = JSON.stringify(data);
+    if (new TextEncoder().encode(payload).length > 3500) {
+      error.textContent = 'Текст слишком длинный. Сократи описание.';
+      return;
+    }
+    app.sendData(payload);
+  });
+</script>
+</body>
+</html>
+
