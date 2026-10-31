@@ -39,11 +39,11 @@
       <div><label for="weight">Вес *</label><input id="weight" name="weight" required placeholder="1,5 кг" maxlength="30" inputmode="decimal"></div>
       <div><label for="filling">Начинка *</label><input id="filling" name="filling" required placeholder="Шоколадная" maxlength="120"></div>
     </div>
-    <label for="description">Описание</label>
-    <textarea id="description" name="description" maxlength="500" placeholder="Что хочется рассказать об этом тортике?"></textarea>
-    <div class="hint">Если оставить пустым, бот подготовит развёрнутое описание сам.</div>
     <details>
       <summary>Дополнительные детали</summary>
+      <label for="description">Описание</label>
+      <textarea id="description" name="description" maxlength="500" placeholder="Если хочется что-то добавить своими словами"></textarea>
+      <div class="hint">Можно оставить пустым. Бот не будет писать описание за тебя.</div>
       <label for="occasion">Повод</label><input id="occasion" name="occasion" maxlength="120" placeholder="День рождения">
       <label for="decoration">Оформление</label><input id="decoration" name="decoration" maxlength="200" placeholder="Розовые цветы">
       <div class="grid">
