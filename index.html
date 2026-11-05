@@ -31,28 +31,19 @@
 <body>
 <main>
   <h1>🎂 Новая публикация</h1>
-  <p class="lead">Фотографии уже добавлены в чате. Заполни несколько полей — бот покажет готовый пост перед публикацией.</p>
+  <p class="lead">Фотографии уже добавлены в чате. Заполни поля — бот покажет готовый пост перед публикацией.</p>
   <form id="form" class="card">
     <label for="name">Название тортика *</label>
     <input id="name" name="name" list="cake-suggestions" required maxlength="120" placeholder="Например, Медовик" autocomplete="off">
     <datalist id="cake-suggestions"></datalist>
-    <div class="grid">
-      <div><label for="weight">Вес *</label><input id="weight" name="weight" required placeholder="1,5 кг" maxlength="30" inputmode="decimal"></div>
-      <div><label for="filling">Начинка *</label><input id="filling" name="filling" list="filling-suggestions" required placeholder="Шоколадная" maxlength="120"></div>
-    </div>
+    <label for="layers">Коржи</label><input id="layers" name="layers" maxlength="120" placeholder="Например, шоколадные">
+    <label for="cream">Крем</label><input id="cream" name="cream" maxlength="120" placeholder="Например, сливочный">
+    <label for="filling">Начинка</label><input id="filling" name="filling" list="filling-suggestions" placeholder="Например, вишня" maxlength="120">
     <datalist id="filling-suggestions"></datalist>
-    <details>
-      <summary>Дополнительные детали</summary>
-      <label for="description">Описание</label>
-      <textarea id="description" name="description" maxlength="500" placeholder="Если хочется что-то добавить своими словами"></textarea>
-      <div class="hint">Можно оставить пустым. Бот не будет писать описание за тебя.</div>
-      <label for="occasion">Повод</label><input id="occasion" name="occasion" maxlength="120" placeholder="День рождения">
-      <label for="decoration">Оформление</label><input id="decoration" name="decoration" maxlength="200" placeholder="Розовые цветы">
-      <div class="grid">
-        <div><label for="price">Цена</label><input id="price" name="price" maxlength="50" placeholder="По желанию"></div>
-        <div><label for="extra">Дополнительно</label><input id="extra" name="extra" maxlength="200" placeholder="По желанию"></div>
-      </div>
-    </details>
+    <label for="decoration">Оформление</label><input id="decoration" name="decoration" maxlength="200" placeholder="Например, в пастельных тонах">
+    <label for="flowers">Цветы</label><input id="flowers" name="flowers" maxlength="120" placeholder="Например, живые розы">
+    <label for="weight">Вес *</label><input id="weight" name="weight" required placeholder="1,5 кг" maxlength="30" inputmode="decimal">
+    <div class="hint">Коржи, крем, начинку, оформление и цветы можно оставить пустыми.</div>
     <button type="submit">Показать готовый пост</button>
     <div id="error" role="alert"></div>
   </form>
@@ -86,8 +77,8 @@
     }
     const data = Object.fromEntries(new FormData(form).entries());
     data.post_id = postId;
-    if (!data.name.trim() || !data.weight.trim() || !data.filling.trim()) {
-      error.textContent = 'Заполни название, вес и начинку.';
+    if (!data.name.trim() || !data.weight.trim()) {
+      error.textContent = 'Заполни название и вес.';
       return;
     }
     const payload = JSON.stringify(data);
