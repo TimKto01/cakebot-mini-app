@@ -37,8 +37,7 @@
     <input id="name" name="name" required maxlength="120" placeholder="Введите название" autocomplete="off">
     <label for="layers">Коржи</label><input id="layers" name="layers" maxlength="120" placeholder="Например, шоколадные">
     <label for="cream">Крем</label><input id="cream" name="cream" maxlength="120" placeholder="Например, сливочный">
-    <label for="filling">Начинка</label><input id="filling" name="filling" list="filling-suggestions" placeholder="Например, вишня" maxlength="120">
-    <datalist id="filling-suggestions"></datalist>
+    <label for="filling">Начинка</label><input id="filling" name="filling" placeholder="Введите начинку" maxlength="120">
     <label for="decoration">Оформление</label><input id="decoration" name="decoration" maxlength="200" placeholder="Например, в пастельных тонах">
     <label for="flowers">Цветы</label><input id="flowers" name="flowers" maxlength="120" placeholder="Например, живые розы">
     <label for="weight">Вес *</label><input id="weight" name="weight" required placeholder="1,5 кг" maxlength="30" inputmode="decimal">
@@ -52,19 +51,6 @@
   app?.ready();
   app?.expand();
   const params = new URLSearchParams(location.search);
-  for (const [key, target] of [['fillings', 'filling-suggestions']]) {
-    try {
-      const values = JSON.parse(params.get(key) || '[]');
-      if (Array.isArray(values)) {
-        for (const value of values.slice(0, 8)) {
-          if (typeof value !== 'string') continue;
-          const option = document.createElement('option');
-          option.value = value;
-          document.getElementById(target).appendChild(option);
-        }
-      }
-    } catch (_) { /* Пользователь всё равно может ввести значение вручную. */ }
-  }
   const form = document.getElementById('form');
   const error = document.getElementById('error');
   form.addEventListener('submit', (event) => {
