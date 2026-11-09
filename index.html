@@ -31,15 +31,15 @@
 <body>
 <main>
   <h1>🎂 Новая публикация</h1>
-  <p class="lead">Фотографии уже добавлены в чате. Заполни поля — бот покажет готовый пост перед публикацией.</p>
+  <p class="lead">Фотографии уже добавлены в чате. Пиши короткие готовые фразы для поста, без слов «Крем:» и «Начинка:». Перед публикацией всё можно изменить.</p>
   <form id="form" class="card">
     <label for="name">Название тортика *</label>
     <input id="name" name="name" required maxlength="120" placeholder="Введите название" autocomplete="off">
-    <label for="layers">Коржи</label><input id="layers" name="layers" maxlength="120" placeholder="Например, шоколадные">
-    <label for="cream">Крем</label><input id="cream" name="cream" maxlength="120" placeholder="Например, сливочный">
-    <label for="filling">Начинка</label><input id="filling" name="filling" placeholder="Введите начинку" maxlength="120">
-    <label for="decoration">Оформление</label><input id="decoration" name="decoration" maxlength="200" placeholder="Например, в пастельных тонах">
-    <label for="flowers">Цветы</label><input id="flowers" name="flowers" maxlength="120" placeholder="Например, живые розы">
+    <label for="layers">Коржи</label><input id="layers" name="layers" maxlength="120" placeholder="Медовые коржи">
+    <label for="cream">Крем</label><input id="cream" name="cream" maxlength="120" placeholder="Сливочный пломбир">
+    <label for="filling">Начинка</label><input id="filling" name="filling" placeholder="Малиновая" maxlength="120">
+    <label for="decoration">Оформление снаружи</label><input id="decoration" name="decoration" maxlength="200" placeholder="Кремчиз и крошка">
+    <label for="flowers">Цветы, если есть</label><input id="flowers" name="flowers" maxlength="120" placeholder="Розы из сахарной пасты">
     <label for="weight">Вес *</label><input id="weight" name="weight" required placeholder="1,5 кг" maxlength="30" inputmode="decimal">
     <div class="hint">Коржи, крем, начинку, оформление и цветы можно оставить пустыми.</div>
     <button type="submit">Показать готовый пост</button>
